@@ -14,6 +14,7 @@ import java.sql.DatabaseMetaData;
  */
 
 /**
+
 First level:
 	TODO: Build one class for the main   
 	TODO: Build class that send request to SqLite and got recived (Class 2)
@@ -22,6 +23,10 @@ Second level:
 	TODO: Build mapping table (recomend use 2 columns(first name of table, second save data type))
 	TODO: Build class for interactive menu for the user. The menu will send data to Class 2 
 	TODO: In class 2 build engine that work with mapping table.
+	
+	My recomendation use json to mapping.
+	Add log file. In log recomend take time_stap, class name and operation name. In case of failed write the error.
+	
 */
 public class SqLite {
 	static String JDBC_URL="jdbc:sqlite:C:/sqlite/db/";
