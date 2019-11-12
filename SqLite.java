@@ -12,6 +12,17 @@ import java.sql.DatabaseMetaData;
  *
  * @author sqlitetutorial.net
  */
+
+/**
+First level:
+	TODO: Build one class for the main   
+	TODO: Build class that send request to SqLite and got recived (Class 2)
+Second level:
+	TODO: Build class that take data and decode data to query.
+	TODO: Build mapping table (recomend use 2 columns(first name of table, second save data type))
+	TODO: Build class for interactive menu for the user. The menu will send data to Class 2 
+	TODO: In class 2 build engine that work with mapping table.
+*/
 public class SqLite {
 	static String JDBC_URL="jdbc:sqlite:C:/sqlite/db/";
 	static      Connection conn = null;
@@ -174,7 +185,6 @@ public class SqLite {
  } catch (SQLException e) {
      System.out.println(e.getMessage());
  }}
-    
     
     public static void main(String[] args) {
 
