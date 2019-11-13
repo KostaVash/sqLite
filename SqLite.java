@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.DatabaseMetaData;
+import java.util.Scanner;
 
 /**
  *
@@ -30,8 +31,9 @@ Second level:
 */
 public class SqLite {
 	static String JDBC_URL="jdbc:sqlite:C:/sqlite/db/";
-	static      Connection conn = null;
-	
+	static Connection conn = null;
+	static String tableName;
+	static String columnName;
 	/**
 	 * set the db path
 	 * @param fileName
