@@ -127,7 +127,62 @@ public class SqLite {
         }
     }
  
-  
+/**
+	 * Create a new column in table
+	 *in test 
+	 * *TODO://finish this with everything that i need to add
+	 */
+	public void createNewColumn(String columnName) {
+		this.columnName=columnName;
+		System.out.println("enter a number to chose the data type you want \n "+
+				"1 - INT/BIGINT \n"+
+				"2- DOUBLE \n"+""
+				+ "3-DATETIME \n"+""
+				+ "4-CHAR \n"+
+				"5-TEXT	 "+
+				""
+				);
+		Scanner s = new Scanner(System.in);
+		int i = s.nextInt();
+		String type="";
+		
+		switch(i) {
+		case 1: 
+			type="BIGINT";
+			break;
+		case 2:
+			type="DOUBLE";
+			break;
+		case 3:
+			type="DATETIME";
+			break;
+			case 4:
+				type="CHAR";
+			break;
+			case 5:
+				type="TEXT";
+				break;
+			
+		}
+		
+
+		this.tableName =tableName;
+		// SQL statement for creating a new table
+		String sql = "ADD TO TABLE "+tableName+" (\n"
+				+columnName+","+type+ " PRIMARY KEY,\n"
+				+ "    name text NOT NULL,\n"
+				+ "    capacity real\n"
+				+ ");";
+
+		try (Connection conn = this.connect();
+				Statement stmt = conn.createStatement()) {
+			// create a new table
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+	  
     /**
      * Insert a new row into the warehouses table
      *
