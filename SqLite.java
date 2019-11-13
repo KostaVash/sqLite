@@ -130,6 +130,8 @@ public class SqLite {
 /**
 	 * Create a new column in table
 	 *in test 
+	 *ALTER TABLE tableName
+	*ADD [COLUMN] column_name column_definition [FIRST|AFTER existing_column];
 	 * *TODO://finish this with everything that i need to add
 	 */
 	public void createNewColumn(String columnName) {
