@@ -131,20 +131,17 @@ public class SqLite {
  
 /**
 	 * Create a new column in table
-	 *in test 
-	 *ALTER TABLE tableName
-	*ADD [COLUMN] column_name column_definition [FIRST|AFTER existing_column];
-	 * *TODO://finish this with everything that i need to add
+	 * *TODO:to add more data types and size and constraints
 	 */
 	public void createNewColumn(String columnName) {
 		this.columnName=columnName;
-		System.out.println("enter a number to chose the data type you want \n "+
+		System.out.println("enter a number to choose the data type you want \n "+
 				"1 - INT/BIGINT \n"+
-				"2- DOUBLE \n"+""
-				+ "3-DATETIME \n"+""
-				+ "4-CHAR \n"+
-				"5-TEXT	 "+
-				""
+				"2 - DOUBLE \n"+""
+				+ "3 -DATETIME \n"+""
+				+ "4 -CHAR \n"+
+				"5 -TEXT	\n"+
+				"enter your choose: "
 				);
 		Scanner s = new Scanner(System.in);
 		int i = s.nextInt();
@@ -152,40 +149,39 @@ public class SqLite {
 		
 		switch(i) {
 		case 1: 
-			type="BIGINT";
+			type="BIGINT;";
 			break;
 		case 2:
-			type="DOUBLE";
+			type="DOUBLE;";
 			break;
 		case 3:
-			type="DATETIME";
+			type="DATETIME;";
 			break;
 			case 4:
-				type="CHAR";
+				type="CHAR;";
 			break;
 			case 5:
-				type="TEXT";
+				type="TEXT;";
 				break;
 			
 		}
 		
 
-		this.tableName =tableName;
-		// SQL statement for creating a new table
-		String sql = "ADD TO TABLE "+tableName+" (\n"
-				+columnName+","+type+ " PRIMARY KEY,\n"
-				+ "    name text NOT NULL,\n"
-				+ "    capacity real\n"
-				+ ");";
+		
+		// SQL statement for creating a new column
+		String sql = "ALTER TABLE "+this.tableName+"\n"
+				+"ADD COLUMN "+columnName+" "+type;
+		System.out.println(sql);
 
 		try (Connection conn = this.connect();
 				Statement stmt = conn.createStatement()) {
-			// create a new table
+			// create a new column
 			stmt.execute(sql);
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
 	}
+	
 	  
     /**
      * Insert a new row into the warehouses table
