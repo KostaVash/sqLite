@@ -176,6 +176,26 @@ public class SqLite {
 		}
 		
 
+		
+		// SQL statement for creating a new column
+		String sql = "ALTER TABLE "+this.tableName+"\n"
+				+"ADD COLUMN "+name+" "+type;
+		System.out.println(sql);
+
+		try (Connection conn = this.connect();
+				Statement stmt = conn.createStatement()) {
+			// create a new column
+			stmt.execute(sql);
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		}
+		else {
+			System.out.println("this column name already exsits");
+		}
+	}
+		
+
     /**
      * Insert a new row into the warehouses table
      *
