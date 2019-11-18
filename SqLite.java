@@ -4,10 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.DatabaseMetaData;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Scanner;
+import java.sql.DatabaseMetaData;
+import java.*;
 
 /**
  *
@@ -32,8 +37,9 @@ Second level:
 public class SqLite {
 	static String JDBC_URL="jdbc:sqlite:C:/sqlite/db/";
 	static Connection conn = null;
-	static String tableName;
-	static String columnName;
+	private  String tableName;
+	private  List<String> columnName =new LinkedList();
+	 
 	/**
 	 * set the db path
 	 * @param fileName
@@ -127,14 +133,17 @@ public class SqLite {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+	      getColumnNames();
     }
  
 /**
 	 * Create a new column in table
 	 * *TODO:to add more data types and size and constraints
 	 */
-	public void createNewColumn(String columnName) {
-		this.columnName=columnName;
+	public void createNewColumn(String name) {
+		int checkExsits;
+		checkExsits=getString(name);
+		if(checkExsits==1) {
 		System.out.println("enter a number to choose the data type you want \n "+
 				"1 - INT/BIGINT \n"+
 				"2 - DOUBLE \n"+""
@@ -167,22 +176,6 @@ public class SqLite {
 		}
 		
 
-		
-		// SQL statement for creating a new column
-		String sql = "ALTER TABLE "+this.tableName+"\n"
-				+"ADD COLUMN "+columnName+" "+type;
-		System.out.println(sql);
-
-		try (Connection conn = this.connect();
-				Statement stmt = conn.createStatement()) {
-			// create a new column
-			stmt.execute(sql);
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-	}
-	
-	  
     /**
      * Insert a new row into the warehouses table
      *
@@ -245,7 +238,49 @@ public class SqLite {
  } catch (SQLException e) {
      System.out.println(e.getMessage());
  }}
-    
+    /**
+	 * add the column names from the table
+	 */
+	private void getColumnNames() {
+		String sql="SELECT * FROM "+tableName;
+		 
+        try (Connection conn = this.connect();
+                Statement stmt = conn.createStatement()) {
+            
+           ResultSet rs= stmt.executeQuery(sql);
+           ResultSetMetaData mrs=rs.getMetaData();
+           for(int i=1;i<=mrs.getColumnCount();i++) {
+        	   columnName.add(mrs.getColumnLabel(i));
+           }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+	}
+	/**
+	 * check if the name already exsits in the column table
+	 * return 1 if added 
+	 * retrun 0 if already exsits {
+	 */private int getString(String name) {
+		if(columnName.isEmpty()) {
+			columnName.add(name);
+			
+			return 1;
+		}
+		else {if(columnName.contains(name)) {
+			
+			return 0;
+		}
+		else {
+			columnName.add(name);
+			
+			return 1;
+		}
+			
+			
+				
+		}
+	
+	}
     public static void main(String[] args) {
 
 SqLite test=new SqLite();
