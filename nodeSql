@@ -1,0 +1,63 @@
+
+
+public class nodeSql {
+String columnName;
+String dataType;
+nodeSql next;
+
+
+/*
+ * creates a node node that gets 2 Strings (column Name , and his data Type)
+ * */
+public nodeSql() {
+	this.columnName=null;
+	this.dataType=null;
+	next=null;
+
+	
+}
+
+
+public nodeSql(String column,String data) {
+	this.columnName=column;
+	this.dataType=data;
+	next=null;
+	
+	
+}
+public nodeSql(nodeSql tmp) {
+	this.columnName=tmp.getColumnName();
+	this.dataType=tmp.getDataType();
+	this.next=tmp.getNext();
+}
+
+public nodeSql getNext() {
+	return next;
+}
+
+public void setNext(nodeSql next) {
+	this.next = next;
+}
+
+public String getColumnName() {
+	return columnName;
+}
+
+public void setColumnName(String columnName) {
+	this.columnName = columnName;
+}
+
+public String getDataType() {
+	return dataType;
+}
+
+public void setDataType(String dataType) {
+	this.dataType = dataType;
+}
+
+
+
+public String toString() {
+	return "<"+this.getColumnName()+"> , <"+this.getDataType()+">";
+}
+}
