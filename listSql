@@ -1,0 +1,115 @@
+
+public class listSql {
+private nodeSql head;
+private int size;
+
+public listSql() {
+	head=null;
+	size=0;
+}
+
+
+public void add(String column,String data) {
+	nodeSql tmp=new nodeSql(column,data);
+	if(isEmpty())
+		head=tmp;
+	else
+	{tmp.setNext(head);
+	head=tmp;
+	}
+	size++;
+	
+}
+public nodeSql header() {
+	return new nodeSql(head);
+}
+public void add(nodeSql tmp) {
+	if (isEmpty()) {
+		head=tmp;
+	}
+	else
+	{
+		tmp.setNext(head);
+		head=tmp;
+	}
+	size++;
+		
+}
+public boolean isEmpty() {
+	if (this.head==null)
+		return true;
+	return false;
+}
+public int getSize() {
+	return size;
+}
+
+public boolean search(String columnName) {
+	nodeSql tmp=head;
+	
+	if(isEmpty())
+		return false;
+	
+	else {while(tmp!=null) {
+		if(tmp.getColumnName().equals(columnName))
+			return true;
+		
+		tmp=tmp.getNext();
+	}	
+	}
+	return false;
+}
+
+
+public void remove(String columnName) {
+	nodeSql tmp=head;
+	nodeSql prev=null;
+	if(isEmpty())
+		System.out.println("not exsited in the list");
+	else {while(tmp!=null) {
+		if(tmp.getColumnName().equals(columnName))
+		{
+			prev.setNext(tmp.getNext());
+			size--;
+			System.out.println(columnName+" has removed from the list");
+		}
+		prev=tmp;
+		tmp=tmp.getNext();
+	}	
+		
+		
+	}
+	
+
+	
+}
+
+public listSql copyList() {
+	listSql copy=new listSql();
+	nodeSql tmp=head;
+	while(tmp!=null)
+	{
+		copy.add(tmp);
+		tmp=tmp.getNext();
+	}
+	
+	
+	return copy;
+}
+
+
+public String toString() {
+	String str="";
+	nodeSql tmp=head;
+	while(tmp!=null) {
+		str+=tmp.toString()+",\n";
+		tmp=tmp.getNext();
+	}
+	
+	return str;
+}
+
+
+
+
+}
