@@ -7,12 +7,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Scanner;
 import java.sql.DatabaseMetaData;
-import java.*;
+import java.sql.Date;
+
 
 /**
  *
@@ -23,13 +21,14 @@ public class SqLite {
 	static Connection conn = null;
 	private  String tableName;
 	private  listSql columnName ;
+	private static final Scanner s=new Scanner(System.in);
 	 
 
 	/**
 	 * set the db path
 	 * @param fileName
 	 */
-	public static void setUrl(String fileName) {
+	public void setUrl(String fileName) {
 		JDBC_URL="jdbc:sqlite:C:/sqlite/db/"+fileName+".db";
 	}
 	/**
@@ -46,7 +45,7 @@ public class SqLite {
             // create a connection to the database
             conn = DriverManager.getConnection(JDBC_URL);
 
-            System.out.println("Connection to SQLite has been established.");
+            System.out.println("Connection to SSQLite has been established.");
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -140,7 +139,6 @@ public class SqLite {
 				"5 -TEXT	\n"+
 				"enter your choose: "
 				);
-		Scanner s = new Scanner(System.in);
 		int i = s.nextInt();
 		String type="";
 		
@@ -183,24 +181,59 @@ public class SqLite {
 			System.out.println("this column name already exsits");
 		}
 	}
-	
+	//TODO insert all in 1 row 
 	/**
 	 * Insert a new row into the table
 	 *
 	 * @param name
 	 * @param capacity
 	 */
-	public void insert(String tableName,String name, double capacity) {
-		String sql = "INSERT INTO "+tableName+"(name,capacity) VALUES(?,?)";
-
+	public void insert() {
+		nodeSql tmp=new nodeSql(columnName.header());
+		while(tmp!=null) {
+		String sql = "INSERT INTO "+tableName+ " ("+tmp.getColumnName()+") VALUES(?)";
+		
+		System.out.println(tableName+","+tmp.getColumnName()+","+tmp.getPsKey());
 		try (Connection conn = this.connect();
 				PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setString(1, name);
-			pstmt.setDouble(2, capacity);
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
+			switch(tmp.getPsKey()) {
+			case 1:
+				System.out.println("Enter your number:");
+				int x=s.nextInt();
+				pstmt.setInt(1,x);
+				break;
+			case 2:
+				System.out.println("Enter your number:");
+				double y=s.nextDouble();
+				pstmt.setDouble(1, y);
+				break;
+			case 3:
+				System.out.println("enter the year: ");
+				int year=s.nextInt();
+				System.out.println("enter the month: ");
+				int month=s.nextInt();
+				System.out.println("enter the day: ");
+				int day=s.nextInt();
+				@SuppressWarnings("deprecation") Date date=new Date(year, month, day);
+				pstmt.setDate(1,date);
+				break;
+				case 4:
+					System.out.println("enter the CHARACTER: ");
+					String str=s.nextLine();
+					pstmt.setString(1, str);
+				break;
+				case 5:
+					System.out.println("enter the String: ");
+					String strr=s.nextLine();
+					pstmt.setString(1, strr);
+					break;
+			}
+			
+			pstmt.executeUpdate();}
+		 catch (SQLException e) {
 			System.out.println(e.getMessage());}
-	}
+		tmp=tmp.getNext();
+	}}
 	/**
 	 * select ALL from the table
 	 */
@@ -213,21 +246,13 @@ public class SqLite {
 				ResultSet rs    = stmt.executeQuery(sql)){
 
 			// Printing the column names
-			nodeSql tmp=new nodeSql(columnName.header());
-			
-			while(tmp != null)
-			{
-				
-			System.out.print(tmp.getColumnName()+"\t");
-				
-				tmp=tmp.getNext();	
-			}System.out.println("\n");
+			printColumnNames();
 			
 			// loop through the result set
 			while(rs.next()) {
 				
 				String resultSetPrint="";
-				tmp=new nodeSql(columnName.header());
+				nodeSql tmp=new nodeSql(columnName.header());
 				
 				while(tmp != null)
 				{
@@ -312,10 +337,46 @@ public class SqLite {
 		}
 		
 	
-	}
+	}/*
+	*printing columns names
+	*/
+	 private void printColumnNames() {
+	nodeSql tmp=new nodeSql(columnName.header());
+			
+			while(tmp != null)
+			{
+				
+			System.out.print(tmp.getColumnName()+"\t");
+				
+				tmp=tmp.getNext();	
+			}
+			System.out.println("\n");
+	 }
+	 //TODO:create private method to know which data type i need to use in every function
+	 
 	 public String toString() {
 		 String str=columnName.toString();
 			return str;
 		}
+	 
+	public static void main(String[] args) {
+
+		SqLite test=new SqLite();
+		test.setUrl("test2");
+		test.createNewDatabase();
+		test.createNewTable("warehouses");
+	//	test.createNewColumn("testtestqa");
+		System.out.println(test.toString());
+		test.selectAll();
+		test.insert();
+		//test.connect();
+		// test.insert("warehouses","test1 test1", 3000);
+		//  test.insert("warehouses","test2 test2", 4000);
+		//    test.insert("warehouses","test3 test3", 5000);
+		//   test.selectAll();
+		//    test.getCapacityGreaterThan(3600);
+
+
+	}
 
 }
