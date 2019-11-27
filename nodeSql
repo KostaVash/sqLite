@@ -5,6 +5,11 @@ String columnName;
 String dataType;
 nodeSql next;
 
+private enum dataKey
+{
+	BIGINT,DOUBLE,DATETIME,CHAR,TEXT
+}
+
 
 /*
  * creates a node node that gets 2 Strings (column Name , and his data Type)
@@ -54,8 +59,31 @@ public String getDataType() {
 public void setDataType(String dataType) {
 	this.dataType = dataType;
 }
+//TODO finish this and make to
 
-
+public int getPsKey() {
+	
+	switch(this.getDataType()) {
+	case "BIGINT": 
+		return 1;
+		
+	case "DOUBLE":
+		return 2;
+		
+	case "DATETIME":
+		return 3;
+		
+		case "CHAR":
+			return 4;
+		
+		case "TEXT":
+			return 5;
+			
+		
+	}
+			
+	return 0;}
+	
 
 public String toString() {
 	return "<"+this.getColumnName()+"> , <"+this.getDataType()+">";
